@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "mysql"
+    url  = "mysql://root:@localhost:3306/HousingGU"
+}
+
+
+model User {
+  id                Int       @id @default(autoincrement())
+  username          String    @unique
+  email             String    @unique
+  password          String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  phoneNumber       String    @unique
+  admin             Boolean  @default(false)
+  profilePicture   String 
+  PreferenceFilled Boolean @default(false)
+  apartments Apartment[]
+  Preference Preference?
+  chats Chat[]
+  messages Message[] @relation("MessageSender")
+}
+model Chat {
+  id         Int       @id @default(autoincrement())
+  name       String
+  users      User[]    
+  chatMessage Message[] @relation("ChatMessage")
+}
+
+model Message {
+  id        Int       @id @default(autoincrement())
+  content   String
+  senderId  Int
+  chatId    Int
+  createdAt DateTime  @default(now())
+  sender    User      @relation("MessageSender", fields: [senderId], references: [id])
+  chat      Chat      @relation("ChatMessage", fields: [chatId], references: [id])
+}
+model Apartment {
+  id               String   @id @default(uuid())
+  name             String
+  image            String
+  smallDescription String
+  fullDescription  String
+  location         String
+  price            String
+  userId           Int
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+model Preference {
+  id                  Int      @id @default(autoincrement())
+  genderPreference    String
+  bedtime             String
+  tidiness            String
+  smoking             String
+  willingToLiveWithSmoker String
+  freeTime            String
+  friendsVisit        String
+  petsComfortable     String
+  comfortable         String
+  owned               String
+  ownedPetsDescription String
+  noiseLevel          String
+  cookingFrequency    String
+  sharingBelongings   String
+  overnightGuests     String
+  cleaningDuties      String
+  workSchedule        String
+  spaceUsage          String
+  hobbies             String
+  privacyExpectation  String
+  allergiesValue      String
+  allergiesDescription String
+  longTermPlans       String
+  billSplit           String
+  conflictResolution  String
+  userId              Int @unique
+  user                User     @relation(fields: [userId], references: [id])
+}
