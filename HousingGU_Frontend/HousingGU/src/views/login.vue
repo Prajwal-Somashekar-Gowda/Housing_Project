@@ -10,7 +10,7 @@
 	const router = useRouter();
 	const formUserName = ref("");
 	const formPassword = ref("");
-
+	const passwordFieldType = ref("password");
 	const formVisible = ref(false);
 	onMounted(() => {
 		formVisible.value = true;
@@ -22,28 +22,33 @@
 		};
 		await axios
 			.post("/login", loginCred, {
-				withCredentials: false,
+				withCredentials: true,
 			})
 			.then(function (response) {
 				const { data } = response;
 				if (data.success) {
-					userInfo.setUserInfo(data.user.username, data.user.admin, data.user.email, data.user.phoneNumber, data.token, data.user.profilePicture);
+					console.log(data.user);
+					userInfo.setUserInfo(data.user.username, data.user.admin, data.user.email, data.user.phoneNumber, data.token, data.user.profilePicture, data.user.id, data.user.PreferenceFilled, data.user.type);
 					toast.success("Sign in successfully", {
 						position: toast.POSITION.BOTTOM_RIGHT,
 						theme: "colored",
 					});
 					axios.defaults.headers.common["Authorization"] = `Bearer ${data.token}`; //enable JWT Token
 					setTimeout(() => {
-						if (data.user.PreferenceFilled == false) {
+						if (data.user.PreferenceFilled == false && data.user.type == "Roomie") {
 							router.push("/roomatePreference");
 						} else {
-							router.push("/profile");
+							if (data.user.type == "Roomie") {
+								router.push("/profile");
+							} else {
+								router.push("/landlord-profile");
+							}
 						}
 					}, 1500);
 				}
 			})
 			.catch(function (error) {
-				console.log(error);
+				//console.log(error + "Error heeeeeeeeeeeeeeeeeeeeeeeere");
 				if ((error.name = "AxiosError")) {
 					toast.error(error.response.data.message, {
 						position: toast.POSITION.BOTTOM_RIGHT,
@@ -59,6 +64,9 @@
 				return;
 			});
 	}
+	const togglePasswordVisibility = () => {
+		passwordFieldType.value = passwordFieldType.value === "password" ? "text" : "password";
+	};
 </script>
 
 <template>
@@ -74,7 +82,13 @@
 					</div>
 					<div class="mb-3">
 						<label for="password" class="form-label">Password</label>
-						<input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="formPassword" />
+						<div class="input-group">
+							<input :type="passwordFieldType" class="form-control" id="password" placeholder="Enter your password" v-model="formPassword" />
+							<button class="btn btn-outline-secondary" type="button" @click="togglePasswordVisibility">
+								<span v-if="passwordFieldType === 'password'">Show</span>
+								<span v-else>Hide</span>
+							</button>
+						</div>
 					</div>
 					<button type="button" @click="login()" class="btn btn-primary">Login</button>
 					<div class="text-center mt-3">

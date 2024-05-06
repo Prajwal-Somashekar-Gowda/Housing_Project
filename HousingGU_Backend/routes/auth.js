@@ -13,8 +13,8 @@ const { rateLimit } = require("express-rate-limit");
 // Home page route.
 
 const authLimiter = rateLimit({
-	windowMs: 60 * 60 * 1000, // 1 hour
-	limit: 30, // Limit each IP to 5 create account requests per `window` (here, per hour)
+	windowMs: 60 * 60 * 1000,
+	limit: 30,
 	message: "You've exceeded the regular amount of requests kindly wait and try again after 1 hour.",
 	standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
@@ -22,7 +22,7 @@ const authLimiter = rateLimit({
 
 const storage = multer.diskStorage({
 	destination: (req, file, cb) => {
-		cb(null, "./uploads");
+		cb(null, "./uploads/profilePictures");
 	},
 	filename: (req, file, cb) => {
 		const originalname = `${uuidv4()}.jpg`;
@@ -47,35 +47,67 @@ const upload = multer({
 auth.post("/signup", authLimiter, upload.single("profilePicture"), async (req, res) => {
 	try {
 		const request = req.body;
-		const { username, email, password, phoneNumber } = request;
-		//fs.chmodSync(req.file.path, "0644");
-		// Check if username, email, and phonenumber are not empty
+		const { username, email, password, phoneNumber, type, aboutMe, age, gender } = request;
+
+		// Check if required fields are provided
 		if (!username || !email || !phoneNumber || req.file == undefined) {
-			return res.status(400).send({ response: "error", errorMessage: "Username, email, and phone number and file are required fields" });
+			return res.status(400).send({ response: "error", errorMessage: "Username, email, phone number, and profile picture are required fields" });
 		}
 
-		let hashedPassword = await bcrypt.hash(password, saltRounds);
+		// Check if type is Roomie and validate additional fields
+		if (type === "Roomie") {
+			if (!aboutMe || !age || !gender) {
+				fs.unlink("./uploads/profilePictures/" + req.file.filename, (err) => {
+					if (err) {
+						console.error("Error deleting file:", err);
+					}
+				});
+				return res.status(400).send({ response: "error", errorMessage: "All fields are required for Roomie type" });
+			}
+		}
+
+		// Hash password
+		const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+		// Create user
 		const user = await prisma.user.create({
 			data: {
 				username: username,
 				email: email,
 				password: hashedPassword,
+				type: type,
+				aboutMe: aboutMe,
 				phoneNumber: phoneNumber,
-				profilePicture: req.file.filename, // Save the file's generated filename to the database
+				profilePicture: req.file.filename,
+				age: parseInt(age),
+				gender: gender,
 			},
 		});
+
 		res.status(200).send({ response: "ok" });
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			if (e.code === "P2002") {
 				if (e.meta.target == "User_phoneNumber_key") {
-					// if phoneNumber is found in DB
+					fs.unlink("./uploads/profilePictures/" + req.file.filename, (err) => {
+						if (err) {
+							console.error("Error deleting file:", err);
+						}
+					});
 					res.status(400).send({ response: "error", errorMessage: " Phone number is linked to another account" });
 				} else if (e.meta.target == "User_username_key") {
-					// if username is found in DB
+					fs.unlink("./uploads/profilePictures/" + req.file.filename, (err) => {
+						if (err) {
+							console.error("Error deleting file:", err);
+						}
+					});
 					res.status(400).send({ response: "error", errorMessage: "Username is linked to another account" });
 				} else if (e.meta.target == "User_email_key") {
-					// if email is found in DB
+					fs.unlink("./uploads/profilePictures/" + req.file.filename, (err) => {
+						if (err) {
+							console.error("Error deleting file:", err);
+						}
+					});
 					res.status(400).send({ response: "error", errorMessage: "Email is linked to another account" });
 				}
 			}
@@ -89,14 +121,13 @@ auth.post("/signup", authLimiter, upload.single("profilePicture"), async (req, r
 auth.post("/login", authLimiter, async (req, res) => {
 	try {
 		const request = req.body;
-
 		let token = "";
 		const getUser = await prisma.user.findUnique({
 			where: {
 				username: request.userName,
 			},
 		});
-		if (getUser == null) {
+		if (getUser == null || getUser === undefined) {
 			return res.status(400).json({ success: false, message: "account does not exist" }); // handle if the account doesnt exist
 		}
 		bcrypt.compare(request.password, getUser.password, async function (err, result) {
@@ -113,7 +144,6 @@ auth.post("/login", authLimiter, async (req, res) => {
 				}
 				return res.status(200).json({ success: true, message: "logged in", user: userWithoutPassword, token: token });
 			} else {
-				// response is OutgoingMessage object that server response http request
 				return res.status(400).json({ success: false, message: "passwords do not match" });
 			}
 		});

@@ -7,7 +7,7 @@
 			<div v-for="category in displayedCategories" :key="category.id" class="col-lg-4 col-md-6 col-sm-6 col-6 d-flex justify-content-center py-3">
 				<div class="card text-light sp-card">
 					<div class="position-relative">
-						<img :src="category.image" class="card-img-top" alt="Room Image" />
+						<img :src="userInfo.ImageURL + category.images[0]" class="card-img-top" alt="Room Image" />
 						<div class="badges">
 							<span class="badge bg-secondary">{{ category.location }}</span>
 							<span class="badge bg-primary">{{ category.price }}</span>
@@ -20,7 +20,7 @@
 						</div>
 						<div class="text-center">
 							<p class="card-text text-muted fs-6">{{ category.fullDescription }}</p>
-							<button class="btn btn-primary btn-sm mt-2">More</button>
+							<button class="btn btn-primary btn-sm mt-2" @click="router.push('./rooms')">More</button>
 						</div>
 					</div>
 				</div>
@@ -93,118 +93,15 @@
 	}
 </style>
 <script setup>
-	import { ref, computed } from "vue";
+	import axios from "axios";
+	import { ref, computed, onMounted } from "vue";
+	import { useRouter, useRoute } from "vue-router";
+	import { userStore } from "../stores/userStore";
+	const userInfo = userStore();
+	const route = useRoute();
+	const router = useRouter();
+	const categories = ref([]); // Initialize categories as an empty array
 
-	const categories = ref([
-		{
-			id: 1,
-			name: "Category 1",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 1",
-			fullDescription: "Full description for category 1",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 2,
-			name: "Category 2",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 2",
-			fullDescription: "Full description for category 2",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 3,
-			name: "Category 3",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 3",
-			fullDescription: "Full description for category 3",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 4,
-			name: "Category 4",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 4",
-			fullDescription: "Full description for category 4",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 5,
-			name: "Category 5",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 5",
-			fullDescription: "Full description for category 5",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 6,
-			name: "Category 6",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 6",
-			fullDescription: "Full description for category 6",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 7,
-			name: "Category 7",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 8,
-			name: "Category 8",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 9,
-			name: "Category 9",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 10,
-			name: "Category 10",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 11,
-			name: "Category 11",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-		{
-			id: 12,
-			name: "Category 12",
-			image: "src/assets/img/apartment.jpg",
-			smallDescription: "Small description for category 7",
-			fullDescription: "Full description for category 7",
-			location: "East Coast New York",
-			price: "$300",
-		},
-	]); // Array of all queried results
 	const itemsPerPage = 6; // Number of items to display per page
 	const currentPage = ref(1); // Current page number
 
@@ -223,4 +120,16 @@
 	const nextPage = () => {
 		currentPage.value++;
 	};
+
+	const getAllPosts = async () => {
+		try {
+			const response = await axios.get("/landingPagePosts");
+			categories.value = response.data.slice(0, 12); // Update categories with the first 12 results
+		} catch (error) {
+			console.error("Error fetching categories:", error);
+		}
+	};
+
+	// Call getAllPosts when the component is mounted
+	onMounted(getAllPosts);
 </script>

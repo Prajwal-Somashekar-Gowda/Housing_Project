@@ -2,44 +2,40 @@
 	<section class="py-5 align-items-center justify-content-center sp-bg-color-w">
 		<div class="container">
 			<div class="row text-center">
-				<h1>What Sets Us Apart</h1>
+				<h1>Why Choose Our Roommate Matching</h1>
 				<br /><br /><br />
-
-				<!-- Card 1 -->
 				<div class="col col-md-4 col-lg-4 d-flex justify-content-center">
 					<div class="card sp-bg-color-card mb-3 sp-card">
 						<div class="h1 mt-3">
-							<i class="bi bi-lock"></i>
+							<i class="bi bi-people"></i>
 						</div>
 						<div class="card-body text-center">
-							<h4 class="card-title">Trust</h4>
-							<p class="card-text">TrustTrustTrustTrustTrustTrustTrustTrustTrustTrustTrustTrust</p>
+							<h4 class="card-title">Personalized Matches</h4>
+							<p class="card-text">Our smart algorithm finds the perfect roommate match for you.</p>
 						</div>
 					</div>
 				</div>
 
-				<!-- Card 2 -->
 				<div class="col col-md-4 col-lg-4 d-flex justify-content-center">
 					<div class="card sp-bg-color-card mb-3 sp-card">
 						<div class="h1 mt-3">
-							<i class="bi bi-lock"></i>
+							<i class="bi bi-check-circle"></i>
 						</div>
 						<div class="card-body text-center">
-							<h4 class="card-title">Ease</h4>
-							<p class="card-text">EaseEaseEaseEaseEaseEaseEaseEaseEaseEaseEaseEaseEase</p>
+							<h4 class="card-title">Verified Profiles</h4>
+							<p class="card-text">We verify each user to ensure a safe and trustworthy community.</p>
 						</div>
 					</div>
 				</div>
 
-				<!-- Card 3 -->
 				<div class="col col-md-4 col-lg-4 d-flex justify-content-center">
 					<div class="card sp-bg-color-card mb-3 sp-card">
 						<div class="h1 mt-3">
-							<i class="bi bi-lock"></i>
+							<i class="bi bi-chat-square-dots"></i>
 						</div>
 						<div class="card-body text-center">
-							<h4 class="card-title">Transparency</h4>
-							<p class="card-text">TransparencyTransparencyTransparencyTransparencyTransparencyTransparency</p>
+							<h4 class="card-title">Easy Communication</h4>
+							<p class="card-text">Connect with potential roommates and coordinate move-in details.</p>
 						</div>
 					</div>
 				</div>

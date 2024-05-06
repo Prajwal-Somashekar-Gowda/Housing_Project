@@ -9,65 +9,67 @@
 				<!-- Q 1 -->
 				<div class="accordion-item sp-bg-color-w">
 					<h2 class="accordion-header">
-						<button class="accordion-button sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">1. Is the platform reliable?</button>
+						<button class="accordion-button sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Is the platform secure?</button>
 					</h2>
 					<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
-						<div class="accordion-body">
-							<strong>Yes</strong>
-						</div>
+						<div class="accordion-body">Yes, we thoroughly verify each user to provide a safe and trustworthy community.</div>
 					</div>
 				</div>
 
 				<!-- Q 2 -->
 				<div class="accordion-item sp-bg-color-w">
 					<h2 class="accordion-header">
-						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">2. Second question</button>
+						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">How does the matching work?</button>
 					</h2>
 					<div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-						<div class="accordion-body">The second question. The second question. The second question. The second question.</div>
+						<div class="accordion-body">Our algorithm analyzes your preferences and lifestyle to suggest the best-fit roommates.</div>
 					</div>
 				</div>
 
 				<!-- Q 3 -->
 				<div class="accordion-item sp-bg-color-w">
 					<h2 class="accordion-header">
-						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">3. Third question</button>
+						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Is there a cost to use the platform?</button>
 					</h2>
 					<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-						<div class="accordion-body">The third question. The third question. The third question. The third question.</div>
+						<div class="accordion-body">No, our Roommate Matching Platform (HousingU) is free to use for all users.</div>
 					</div>
 				</div>
 
 				<!-- Q 4 -->
 				<div class="accordion-item sp-bg-color-w">
 					<h2 class="accordion-header">
-						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">4. Fourth question</button>
+						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">How can I contact support?</button>
 					</h2>
 					<div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-						<div class="accordion-body">The fourth question. The fourth question. The fourth question. The fourth question.</div>
-					</div>
-				</div>
-
-				<!-- Q 5 -->
-				<div class="accordion-item sp-bg-color-w">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">5. Fifth question</button>
-					</h2>
-					<div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-						<div class="accordion-body">The fifth question. The fifth question. The fifth question.</div>
-					</div>
-				</div>
-
-				<!-- Q 6 -->
-				<div class="accordion-item sp-bg-color-w">
-					<h2 class="accordion-header">
-						<button class="accordion-button collapsed sp-bg-color-w" type="button" data-bs-toggle="collapse" data-bs-target="#collapsesix" aria-expanded="false" aria-controls="collapsesix">6. Sixth question</button>
-					</h2>
-					<div id="collapsesix" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
-						<div class="accordion-body">The sixth question. The sixth question. The sixth question.</div>
+						<div class="accordion-body">You can reach our support team at support@HousingU.com.</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 </template>
+
+<style scoped>
+	.sp-bg-color-w {
+		background-color: #f9f7f7 !important;
+	}
+
+	.sp-bg-color-card {
+		background-color: #d5bbf7 !important;
+		color: black;
+	}
+
+	/* Search Page */
+	.sp-search-card {
+		text-decoration: none;
+		color: black;
+	}
+
+	.vertical {
+		border-left: 6px solid #91c3f3;
+		height: 800px;
+		position: absolute;
+		left: 75%;
+	}
+</style>
